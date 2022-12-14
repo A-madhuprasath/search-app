@@ -1,17 +1,28 @@
 import './App.css';
 import {useEffect, useState} from "react";
 import axios from "axios"
+
 const url = `http://www.mocky.io/v2/5ba8efb23100007200c2750c`
 
 function App() {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("")
-
+  const [cursor, setCursor] = useState(0);
 
 
   useEffect(() => {
     getData();
   }, []);
+
+
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 38 && cursor > 0) {
+      setCursor((prev) => prev - 1)
+    } else if (e.keyCode === 40 && cursor < data.length - 1) {
+      setCursor((prev) => prev + 1)
+    }
+    scroll();
+  }
 
 
   const getData = async () => {
@@ -57,12 +68,26 @@ function App() {
     }
   };
 
+  const scroll = () => {
+    const linksEl = document.getElementById(`active`);
+    if (linksEl) {
+      const tabContainerEl = document.getElementById("top-progress-bar");
+      tabContainerEl.scrollTo({
+        top: 50,
+        behavior: "smooth"
+      });
+    }
+  }
+
+
   return (
     <div className="App">
-      <input className='input' placeholder="Search something" onChange={event => setQuery(event.target.value)}/>
-      {query.length > 0 && <div className='cardContainer'>
-        {filteredProducts?.length > 0 && filteredProducts?.map((item) => (
-          <div className='card'>
+      <input onKeyDown={handleKeyDown} className='input' placeholder="Search something"
+             onChange={event => setQuery(event.target.value)}/>
+      {query.length > 0 && <div className='cardContainer' id={'top-progress-bar'}>
+        {filteredProducts?.length > 0 && filteredProducts?.map((item, i) => (
+          <div id={cursor === i ? 'active' : null} onMouseEnter={() => setCursor(i)}
+               className={cursor === i ? 'hover' : 'card'}>
             <p dangerouslySetInnerHTML={{
               __html: boldString(item.id, query, true)
             }}/>

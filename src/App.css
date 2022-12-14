@@ -10,7 +10,7 @@
     border-radius: 8px;
 }
 
-.card:hover {
+.hover {
     border: 1px solid black;
     width: 300px;
     margin: 10px auto auto;
