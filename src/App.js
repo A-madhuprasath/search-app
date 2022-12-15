@@ -91,7 +91,7 @@ function App() {
              }}/>
       {query.length > 0 && <div className='cardContainer' id={'top-progress-bar'}>
         {filteredProducts?.length > 0 && filteredProducts?.map((item, i) => (
-          <div id={`div-${i}`} onMouseEnter={() => setCursor(i)} className={cursor === i ? 'hover' : 'card'}>
+          <div id={`div-${i}`} className={cursor === i ? 'hover' : 'card'}>
             <p dangerouslySetInnerHTML={{
               __html: boldString(item.id, query, true)
             }}/>
