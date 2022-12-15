@@ -2,7 +2,7 @@ import './App.css';
 import {useEffect, useState} from "react";
 import axios from "axios"
 
-const url = `http://www.mocky.io/v2/5ba8efb23100007200c2750c`
+const url = `https://www.mocky.io/v2/5ba8efb23100007200c2750c`
 
 function App() {
   const [data, setData] = useState([]);
@@ -91,7 +91,7 @@ function App() {
              }}/>
       {query.length > 0 && <div className='cardContainer' id={'top-progress-bar'}>
         {filteredProducts?.length > 0 && filteredProducts?.map((item, i) => (
-          <div id={`div-${i}`} className={cursor === i ? 'hover' : 'card'}>
+          <div id={`div-${i}`} onMouseEnter={() => setCursor(i)} className={cursor === i ? 'hover' : 'card'}>
             <p dangerouslySetInnerHTML={{
               __html: boldString(item.id, query, true)
             }}/>
