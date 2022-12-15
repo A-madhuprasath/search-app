@@ -9,10 +9,13 @@ function App() {
   const [query, setQuery] = useState("")
   const [cursor, setCursor] = useState(0);
 
-
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    scroll(`div-${cursor}`);
+  }, [cursor]);
 
 
   const handleKeyDown = (e) => {
@@ -21,7 +24,6 @@ function App() {
     } else if (e.keyCode === 40 && cursor < data.length - 1) {
       setCursor((prev) => prev + 1)
     }
-    scroll();
   }
 
 
@@ -68,12 +70,12 @@ function App() {
     }
   };
 
-  const scroll = () => {
-    const linksEl = document.getElementById(`active`);
+  const scroll = (id) => {
+    const linksEl = document.getElementById(id);
     if (linksEl) {
       const tabContainerEl = document.getElementById("top-progress-bar");
       tabContainerEl.scrollTo({
-        top: 50,
+        top: linksEl.offsetTop - 50,
         behavior: "smooth"
       });
     }
@@ -83,11 +85,13 @@ function App() {
   return (
     <div className="App">
       <input onKeyDown={handleKeyDown} className='input' placeholder="Search something"
-             onChange={event => setQuery(event.target.value)}/>
+             onChange={event => {
+               setQuery(event.target.value)
+               setCursor(0)
+             }}/>
       {query.length > 0 && <div className='cardContainer' id={'top-progress-bar'}>
         {filteredProducts?.length > 0 && filteredProducts?.map((item, i) => (
-          <div id={cursor === i ? 'active' : null} onMouseEnter={() => setCursor(i)}
-               className={cursor === i ? 'hover' : 'card'}>
+          <div id={`div-${i}`} className={cursor === i ? 'hover' : 'card'}>
             <p dangerouslySetInnerHTML={{
               __html: boldString(item.id, query, true)
             }}/>
