@@ -8,6 +8,7 @@ function App() {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("")
   const [cursor, setCursor] = useState(0);
+  //testing commit
 
   useEffect(() => {
     getData();
